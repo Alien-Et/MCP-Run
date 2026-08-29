@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F6FA"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 顶部标题栏 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MCP Run"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="轻量级 MCP 服务器"
+                android:textSize="14sp"
+                android:textColor="#6B7280"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+        <!-- 状态卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
+            android:radius="12dp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务状态"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937"
+                android:layout_marginBottom="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <View
+                    android:id="@+id/statusDot"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="#9CA3AF"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/statusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已停止"
+                    android:textSize="15sp"
+                    android:textColor="#6B7280" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="端口"
+                    android:textSize="13sp"
+                    android:textColor="#9CA3AF" />
+
+                <TextView
+                    android:id="@+id/portDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1145"
+                    android:textSize="15sp"
+                    android:textColor="#328FFC"
+                    android:textStyle="bold"
+                    android:layout_marginStart="4dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#F3F4F6"
+                android:padding="12dp"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="连接地址"
+                    android:textSize="13sp"
+                    android:textColor="#9CA3AF"
+                    android:layout_gravity="center_vertical" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/ipText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="点击启动服务器"
+                    android:textSize="14sp"
+                    android:textColor="#6B7280"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 控制卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="控制面板"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/toggleBtn"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="启动服务器"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#328FFC"
+                android:radius="10dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="端口号"
+                        android:textSize="13sp"
+                        android:textColor="#6B7280"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/portInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:inputType="number"
+                        android:text="1145"
+                        android:textSize="15sp"
+                        android:textColor="#1F2937"
+                        android:background="#F3F4F6"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:gravity="center_vertical" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="超时(秒)"
+                        android:textSize="13sp"
+                        android:textColor="#6B7280"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/timeoutInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:inputType="number"
+                        android:text="60"
+                        android:textSize="15sp"
+                        android:textColor="#1F2937"
+                        android:background="#F3F4F6"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:gravity="center_vertical" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 工具集卡片 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:elevation="4dp"
+            android:padding="16dp"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="工具集"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/toolsBtn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="查看工具集"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#8B5CF6"
+                android:radius="10dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+        </LinearLayout>
+
+        <!-- 底部说明 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MCP Run v1.12"
+            android:textSize="12sp"
+            android:textColor="#9CA3AF"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.mcp_run'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.mcp_run"
+        minSdk 26
+        targetSdk 34
+        versionCode 10
+        versionName "1.16"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("keystore/mcp_run.keystore")
+            storePassword "mcp_run_2024"
+            keyAlias "mcp_run"
+            keyPassword "mcp_run_2024"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.preference:preference:1.2.1'
+}

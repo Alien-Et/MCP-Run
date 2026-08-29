@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MIUI Night Mode -->
+    <color name="bg_primary">#0B0F1A</color>
+    <color name="bg_secondary">#121826</color>
+    <color name="bg_surface">#1A2236</color>
+    
+    <!-- 小米蓝 -->
+    <color name="primary">#328FFC</color>
+    <color name="primary_dark">#1A7BEB</color>
+    <color name="primary_light">#5DA3FC</color>
+    <color name="accent">#328FFC</color>
+    <color name="accent_soft">#1E3A5F</color>
+    
+    <!-- 玻璃卡片 -->
+    <color name="glass_card">#E61A2236</color>
+    <color name="glass_card_border">#2D3748</color>
+    <color name="glass_overlay">#121826</color>
+    
+    <!-- 状态颜色 -->
+    <color name="status_green">#34D399</color>
+    <color name="status_red">#F87171</color>
+    <color name="status_gray">#6B7280</color>
+    <color name="status_orange">#FBBF24</color>
+    
+    <!-- 文字颜色 -->
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_hint">#64748B</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    
+    <!-- 分割线 -->
+    <color name="divider">#2D3748</color>
+    
+    <!-- 日志区 -->
+    <color name="log_background">#0A0E17</color>
+    <color name="log_text">#34D399</color>
+    
+    <!-- 卡片背景 -->
+    <color name="card_background">#1A2236</color>
+</resources>

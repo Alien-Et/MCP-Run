@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 日间主题 -->
+    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#328FFC</item>
+        <item name="colorPrimaryVariant">#2A7CE0</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#00C853</item>
+        <item name="colorSecondaryVariant">#00A844</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="materialAlertDialogTheme">@style/GlassAlertDialog</item>
+    </style>
+
+    <!-- 夜间主题 -->
+    <style name="AppTheme.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#5B9CF5</item>
+        <item name="colorPrimaryVariant">#4A8BE0</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#4CAF50</item>
+        <item name="colorSecondaryVariant">#3D8B40</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="materialAlertDialogTheme">@style/GlassAlertDialog.Dark</item>
+    </style>
+
+    <!-- 玻璃弹窗样式 - 日间 -->
+    <style name="GlassAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">#F8F9FA</item>
+        <item name="colorOnSurface">#1F2937</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/GlassDialogTitle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/GlassDialogBody</item>
+        <item name="buttonBarPositiveButtonStyle">@style/GlassDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/GlassDialogButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/GlassDialogButton</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Glass.Dialog</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
+    <!-- 玻璃弹窗样式 - 夜间 -->
+    <style name="GlassAlertDialog.Dark" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">#1E1E1E</item>
+        <item name="colorOnSurface">#F3F4F6</item>
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/GlassDialogTitle.Dark</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/GlassDialogBody.Dark</item>
+        <item name="buttonBarPositiveButtonStyle">@style/GlassDialogButton.Dark</item>
+        <item name="buttonBarNegativeButtonStyle">@style/GlassDialogButton.Dark</item>
+        <item name="buttonBarNeutralButtonStyle">@style/GlassDialogButton.Dark</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Glass.Dialog</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
+    <style name="ShapeAppearance.Glass.Dialog" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+
+    <style name="GlassDialogTitle" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textColor">#1F2937</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GlassDialogTitle.Dark" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textColor">#F3F4F6</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GlassDialogBody" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textColor">#6B7280</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="GlassDialogBody.Dark" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textColor">#9CA3AF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="GlassDialogButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="rippleColor">#33FFFFFF</item>
+    </style>
+
+    <style name="GlassDialogButton.Dark" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="rippleColor">#33333333</item>
+    </style>
+</resources>

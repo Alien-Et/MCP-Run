@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MCP·AC</string>
+    <string name="app_description">Android MCP 协议服务器</string>
+    
+    <!-- 通知 -->
+    <string name="notification_channel_name">MCP服务器</string>
+    <string name="notification_channel_desc">MCP服务器的运行状态通知</string>
+    <string name="notification_running">MCP服务器运行中</string>
+    <string name="notification_stopped">MCP服务器已停止</string>
+    
+    <!-- 权限 -->
+    <string name="permission_storage_rationale">需要存储权限以读写文件</string>
+    <string name="permission_notification_rationale">需要通知权限以显示服务器状态</string>
+    
+    <!-- UI -->
+    <string name="server_stopped">已停止</string>
+    <string name="server_running">运行中</string>
+    <string name="start_server">启动服务器</string>
+    <string name="stop_server">停止服务器</string>
+    <string name="copy_endpoint">复制端点</string>
+    <string name="clear_log">清空</string>
+    <string name="port_label">端口</string>
+    <string name="workspace_label">工作区</string>
+    <string name="usage_title">使用说明</string>
+    <string name="log_title">运行日志</string>
+    <string name="telegram_contact">Telegram: @ADFXCBNM</string>
+    <string name="about_title">关于 MCP·AC</string>
+    <string name="tool_list_title">工具列表</string>
+    <string name="server_status_title">服务器状态</string>
+</resources>
