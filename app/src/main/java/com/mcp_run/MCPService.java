@@ -31,6 +31,7 @@ public class MCPService extends Service {
     public static final String EXTRA_API_KEY = "extra_api_key";
     public static final String ACTION_STOP = "STOP";
     public static final String ACTION_STOP_FROM_NOTIFICATION = "com.mcp_run.ACTION_STOP_FROM_NOTIFICATION";
+    public static final String ACTION_EXIT_APP = "com.mcp_run.ACTION_EXIT_APP"; // 退出应用
     
     private MCPHttpServer server;
     private static MCPService instance;
@@ -201,7 +202,7 @@ public class MCPService extends Service {
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setOngoing(isRunning)
-                .addAction(android.R.drawable.ic_menu_close_clear_cancel, "停止服务", stopPendingIntent);
+                .addAction(android.R.drawable.ic_menu_close_clear_cancel, "关闭并退出", stopPendingIntent);
         
         return builder.build();
     }
@@ -245,10 +246,10 @@ public class MCPService extends Service {
     }
     
     /**
-     * 停止服务器并通知 Activity 更新 UI
+     * 停止服务器并退出应用
      */
     private void stopServerAndNotify() {
-        Log.d(TAG, "Stopping server from notification button...");
+        Log.d(TAG, "Stopping server from notification button and exiting app...");
         
         // 停止服务器
         if (server != null) {
@@ -261,9 +262,14 @@ public class MCPService extends Service {
         broadcast.setPackage(getPackageName());
         sendBroadcast(broadcast);
         
+        // 发送退出应用广播
+        Intent exitIntent = new Intent(ACTION_EXIT_APP);
+        exitIntent.setPackage(getPackageName());
+        sendBroadcast(exitIntent);
+        
         // 显示提示
         mainHandler.post(() -> {
-            Toast.makeText(this, "MCP 服务器已停止", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "已停止服务并退出应用", Toast.LENGTH_SHORT).show();
         });
         
         // 停止服务

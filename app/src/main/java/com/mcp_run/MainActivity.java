@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     
     // 用于接收服务停止通知的广播接收器
     private BroadcastReceiver stopReceiver;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +64,17 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Received stop notification from service");
                     // 更新UI状态
                     updateServerStatus(false);
+                } else if (MCPService.ACTION_EXIT_APP.equals(action)) {
+                    Log.d(TAG, "Received exit app notification - finishing activity");
+                    // 退出应用
+                    finishAffinity();
                 }
             }
         };
         
-        IntentFilter filter = new IntentFilter(MCPService.ACTION_STOP_FROM_NOTIFICATION);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MCPService.ACTION_STOP_FROM_NOTIFICATION);
+        filter.addAction(MCPService.ACTION_EXIT_APP);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(stopReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
         } else {
