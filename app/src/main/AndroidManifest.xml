@@ -140,12 +140,16 @@
             android:parentActivityName=".MainActivity" />
 
         <!-- 透明 Activity 用于处理通知栏停止按钮 -->
-        <activity
-            android:name=".StopActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Translucent.NoTitle"
-            android:launchMode="singleTask"
-            android:excludeFromRecents="true" />
+        <!-- 已移除：改用 NotificationStopReceiver -->
+
+        <!-- 通知栏停止按钮 Receiver -->
+        <receiver
+            android:name=".NotificationStopReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mcp_run.STOP" />
+            </intent-filter>
+        </receiver>
 
         <!-- ========== 前台服务 ========== -->
         <service

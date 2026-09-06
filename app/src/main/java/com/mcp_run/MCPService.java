@@ -21,7 +21,8 @@ import androidx.core.app.NotificationCompat;
 import java.io.IOException;
 
 /**
- * MVP v1.18 - MCP前台服务（修复通知栏停止按钮）
+ * MVP v1.19 - MCP前台服务（重构通知栏逻辑）
+ * 使用 manifest-registered Receiver 实现可靠的停止按钮
  */
 public class MCPService extends Service {
     private static final String TAG = "MCPService";
@@ -30,8 +31,7 @@ public class MCPService extends Service {
     public static final String EXTRA_PORT = "extra_port";
     public static final String EXTRA_API_KEY = "extra_api_key";
     public static final String ACTION_STOP = "STOP";
-    public static final String ACTION_STOP_FROM_NOTIFICATION = "com.mcp_run.ACTION_STOP_FROM_NOTIFICATION";
-    public static final String ACTION_EXIT_APP = "com.mcp_run.ACTION_EXIT_APP"; // 退出应用
+    public static final String ACTION_EXIT_APP = "com.mcp_run.ACTION_EXIT_APP";
     
     private MCPHttpServer server;
     private static MCPService instance;
@@ -39,8 +39,7 @@ public class MCPService extends Service {
     private static String currentApiKey = null;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     
-    // 用于从通知停止时通知 Activity
-    private BroadcastReceiver statusUpdateReceiver;
+    private NotificationManager notificationManager;
     
     public static boolean isRunning() {
         return instance != null && instance.server != null && instance.server.isRunning();
@@ -62,27 +61,8 @@ public class MCPService extends Service {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         createNotificationChannel();
-        
-        // 注册广播接收器，用于通知 Activity 更新状态
-        statusUpdateReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (ACTION_STOP_FROM_NOTIFICATION.equals(action)) {
-                    Log.d(TAG, "Received stop notification from bar");
-                    stopServerAndNotify();
-                }
-            }
-        };
-        
-        IntentFilter filter = new IntentFilter(ACTION_STOP_FROM_NOTIFICATION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(statusUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
-        } else {
-            registerReceiver(statusUpdateReceiver, filter);
-        }
-        
         Log.d(TAG, "Service created");
     }
     
@@ -92,16 +72,8 @@ public class MCPService extends Service {
         
         // 处理从通知栏点击停止按钮
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
-            Log.d(TAG, "Stopping service from notification button...");
-            // 检查是否来自通知按钮
-            boolean fromNotification = intent.getBooleanExtra("stop_from_notification", false);
-            if (fromNotification) {
-                Log.d(TAG, "Stop requested from notification button - calling stopServerAndNotify");
-                stopServerAndNotify();
-            } else {
-                // 普通的停止命令
-                stopSelf();
-            }
+            Log.d(TAG, "Stop requested from notification button");
+            stopServerAndExit();
             return START_NOT_STICKY;
         }
         
@@ -146,7 +118,6 @@ public class MCPService extends Service {
                 
                 server.start();
                 
-                // 更新通知
                 String notifyText = "MCP服务器运行中 端口:" + server.getPort()
                     + (apiKey != null ? " [认证已启用]" : "");
                 updateNotification(notifyText, true);
@@ -155,11 +126,10 @@ public class MCPService extends Service {
                 Log.e(TAG, "启动服务器失败", e);
                 updateNotification("启动失败: " + e.getMessage(), false);
                 
-                // 在主线程显示 Toast
                 mainHandler.post(() -> {
-                    android.widget.Toast.makeText(MCPService.this, 
+                    Toast.makeText(MCPService.this, 
                         "服务器启动失败: " + e.getMessage(), 
-                        android.widget.Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_LONG).show();
                 });
             } catch (Exception e) {
                 Log.e(TAG, "未知错误", e);
@@ -172,9 +142,8 @@ public class MCPService extends Service {
     
     private void updateNotification(String text, boolean isRunning) {
         Notification notification = createNotification(text, isRunning);
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (nm != null) {
-            nm.notify(NOTIFICATION_ID, notification);
+        if (notificationManager != null) {
+            notificationManager.notify(NOTIFICATION_ID, notification);
         }
     }
     
@@ -185,11 +154,11 @@ public class MCPService extends Service {
                 this, 0, tapIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
-        // 使用透明 Activity 处理停止按钮（更可靠）
-        Intent stopIntent = new Intent(this, StopActivity.class);
-        stopIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        // 使用 manifest 注册的 NotificationStopReceiver 处理停止按钮
+        Intent stopIntent = new Intent(this, NotificationStopReceiver.class);
+        stopIntent.setAction(ACTION_STOP);
         stopIntent.putExtra("stop_from_notification", true);
-        PendingIntent stopPendingIntent = PendingIntent.getActivity(
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(
                 this, 999, stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
@@ -216,9 +185,8 @@ public class MCPService extends Service {
             );
             channel.setDescription("MCP服务器的运行状态通知");
             channel.setShowBadge(false);
-            NotificationManager nm = getSystemService(NotificationManager.class);
-            if (nm != null) {
-                nm.createNotificationChannel(channel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
             }
         }
     }
@@ -226,17 +194,6 @@ public class MCPService extends Service {
     @Override
     public void onDestroy() {
         Log.d(TAG, "Service destroyed, server running: " + (server != null && server.isRunning()));
-        
-        // 注销广播接收器
-        try {
-            if (statusUpdateReceiver != null) {
-                unregisterReceiver(statusUpdateReceiver);
-                statusUpdateReceiver = null;
-            }
-        } catch (Exception e) {
-            Log.w(TAG, "Failed to unregister receiver", e);
-        }
-        
         if (server != null) {
             server.stop();
             server = null;
@@ -245,39 +202,53 @@ public class MCPService extends Service {
         super.onDestroy();
     }
     
-    /**
-     * 停止服务器并退出应用
-     */
-    private void stopServerAndNotify() {
+    private void stopServerAndExit() {
         Log.d(TAG, "Stopping server from notification button and exiting app...");
         
-        // 停止服务器
         if (server != null) {
             server.stop();
             server = null;
         }
         
-        // 发送广播通知 Activity
-        Intent broadcast = new Intent(ACTION_STOP_FROM_NOTIFICATION);
-        broadcast.setPackage(getPackageName());
-        sendBroadcast(broadcast);
-        
-        // 发送退出应用广播
         Intent exitIntent = new Intent(ACTION_EXIT_APP);
         exitIntent.setPackage(getPackageName());
         sendBroadcast(exitIntent);
         
-        // 显示提示
         mainHandler.post(() -> {
             Toast.makeText(this, "已停止服务并退出应用", Toast.LENGTH_SHORT).show();
         });
         
-        // 停止服务
         stopSelf();
     }
     
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+}
+
+/**
+ * Manifest 注册的 Receiver，处理通知栏停止按钮
+ * 使用 getBroadcast() 比 getService() 更可靠
+ */
+class NotificationStopReceiver extends BroadcastReceiver {
+    private static final String TAG = "NotificationStopReceiver";
+    
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        Log.d(TAG, "onReceive action=" + action);
+        
+        if (MCPService.ACTION_STOP.equals(action)) {
+            Intent stopIntent = new Intent(context, MCPService.class);
+            stopIntent.setAction(MCPService.ACTION_STOP);
+            stopIntent.putExtra("stop_from_notification", true);
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(stopIntent);
+            } else {
+                context.startService(stopIntent);
+            }
+        }
     }
 }
