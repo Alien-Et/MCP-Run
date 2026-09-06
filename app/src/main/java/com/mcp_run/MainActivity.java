@@ -1,11 +1,15 @@
 package com.mcp_run;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +25,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 /**
- * MVP v1.17 - 主界面（修复闪退）
+ * MVP v1.18 - 主界面（修复通知栏停止同步）
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRunning = false;
     private int currentPort = 1145;
     private boolean isStarting = false;
+    
+    // 用于接收服务停止通知的广播接收器
+    private BroadcastReceiver stopReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,26 @@ public class MainActivity extends AppCompatActivity {
         initViews();
         loadPreferences();
         updateServerStatus(MCPService.isRunning());
+        
+        // 注册广播接收器监听服务停止事件
+        stopReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (MCPService.ACTION_STOP_FROM_NOTIFICATION.equals(action)) {
+                    Log.d(TAG, "Received stop notification from service");
+                    // 更新UI状态
+                    updateServerStatus(false);
+                }
+            }
+        };
+        
+        IntentFilter filter = new IntentFilter(MCPService.ACTION_STOP_FROM_NOTIFICATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(stopReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(stopReceiver, filter);
+        }
     }
     
     @Override
@@ -54,6 +81,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         // 每次回到界面时检查服务状态
         runOnUiThread(() -> updateServerStatus(MCPService.isRunning()));
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 注销广播接收器
+        try {
+            if (stopReceiver != null) {
+                unregisterReceiver(stopReceiver);
+                stopReceiver = null;
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to unregister receiver", e);
+        }
     }
 
     private void initViews() {
