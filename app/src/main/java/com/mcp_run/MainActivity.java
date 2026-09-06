@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 if ("com.mcp_run.ACTION_EXIT_APP".equals(action)) {
-                    Log.d(TAG, "Received exit app notification - finishing activity");
-                    finishAffinity();
+                    Log.d(TAG, "Received exit app notification");
+                    finishAffinity(); // 退出所有Activity
                 }
             }
         };

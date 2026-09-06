@@ -5,7 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -19,8 +18,7 @@ import androidx.core.app.NotificationCompat;
 import java.io.IOException;
 
 /**
- * MVP v1.20 - MCP前台服务（全新通知栏架构）
- * 使用透明 Activity 处理停止按钮，确保可靠响应
+ * MVP v1.20 - MCP前台服务
  */
 public class MCPService extends Service {
     private static final String TAG = "MCPService";
@@ -144,10 +142,9 @@ public class MCPService extends Service {
                 this, 0, tapIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
-        // 停止按钮：启动透明 Activity 处理停止逻辑
+        // 停止按钮：启动 StopDialogActivity，立即停止并退出
         Intent stopIntent = new Intent(this, StopDialogActivity.class);
         stopIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        stopIntent.putExtra("action", "stop");
         PendingIntent stopPendingIntent = PendingIntent.getActivity(
                 this, 999, stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -190,24 +187,6 @@ public class MCPService extends Service {
         }
         instance = null;
         super.onDestroy();
-    }
-    
-    /**
-     * 公开方法：停止服务器并退出应用
-     */
-    public void stopServerAndExit() {
-        Log.d(TAG, "Stopping server and exiting app...");
-        
-        if (server != null) {
-            server.stop();
-            server = null;
-        }
-        
-        mainHandler.post(() -> {
-            Toast.makeText(this, "已停止服务并退出应用", Toast.LENGTH_SHORT).show();
-        });
-        
-        stopSelf();
     }
     
     @Override
