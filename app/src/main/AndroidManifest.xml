@@ -142,14 +142,14 @@
         <!-- 透明 Activity 用于处理通知栏停止按钮 -->
         <!-- 已移除：改用 NotificationStopReceiver -->
 
-        <!-- 通知栏停止按钮 Receiver -->
-        <receiver
-            android:name=".NotificationStopReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.mcp_run.STOP" />
-            </intent-filter>
-        </receiver>
+        <!-- 透明 Activity 用于处理通知栏停止按钮 -->
+        <activity
+            android:name=".StopDialogActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true" />
 
         <!-- ========== 前台服务 ========== -->
         <service

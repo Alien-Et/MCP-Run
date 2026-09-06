@@ -60,21 +60,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                if (MCPService.ACTION_STOP_FROM_NOTIFICATION.equals(action)) {
-                    Log.d(TAG, "Received stop notification from service");
-                    // 更新UI状态
-                    updateServerStatus(false);
-                } else if (MCPService.ACTION_EXIT_APP.equals(action)) {
+                if ("com.mcp_run.ACTION_EXIT_APP".equals(action)) {
                     Log.d(TAG, "Received exit app notification - finishing activity");
-                    // 退出应用
                     finishAffinity();
                 }
             }
         };
         
         IntentFilter filter = new IntentFilter();
-        filter.addAction(MCPService.ACTION_STOP_FROM_NOTIFICATION);
-        filter.addAction(MCPService.ACTION_EXIT_APP);
+        filter.addAction("com.mcp_run.ACTION_EXIT_APP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(stopReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
         } else {
@@ -328,9 +322,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopServer() {
-        Intent intent = new Intent(this, MCPService.class);
-        intent.setAction(MCPService.ACTION_STOP);
-        startService(intent);
+        // 直接调用服务停止方法
+        if (MCPService.isRunning()) {
+            Intent intent = new Intent(this, MCPService.class);
+            stopService(intent);
+        }
         
         isRunning = false;
         updateServerStatus(false);
