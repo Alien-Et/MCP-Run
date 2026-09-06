@@ -30,11 +30,16 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
-            zipAlignEnabled false
+            aaptOptions {
+                cruncherEnabled false
+                ignoreAssetsPattern "!.svn:!.git:.*:!*.db:!*.bin"
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
         }
     }
     compileOptions {
