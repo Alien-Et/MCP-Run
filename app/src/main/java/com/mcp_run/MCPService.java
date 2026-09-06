@@ -5,20 +5,23 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import java.io.IOException;
 
 /**
- * MVP v1.20 - MCP前台服务
+ * MVP v1.21 - MCP前台服务（参考 OpenList 实现）
+ * 使用 PendingIntent.getBroadcast() + 内部 BroadcastReceiver
  */
 public class MCPService extends Service {
     private static final String TAG = "MCPService";
@@ -27,6 +30,9 @@ public class MCPService extends Service {
     public static final String EXTRA_PORT = "extra_port";
     public static final String EXTRA_API_KEY = "extra_api_key";
     
+    // Action constants
+    public static final String ACTION_STOP = "com.mcp_run.ACTION_STOP";
+    
     private MCPHttpServer server;
     private static MCPService instance;
     private static int currentPort = 1145;
@@ -34,6 +40,7 @@ public class MCPService extends Service {
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     
     private NotificationManager notificationManager;
+    private NotificationActionReceiver notificationReceiver;
     
     public static boolean isRunning() {
         return instance != null && instance.server != null && instance.server.isRunning();
@@ -56,6 +63,13 @@ public class MCPService extends Service {
         super.onCreate();
         instance = this;
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        
+        // 注册通知操作接收器
+        notificationReceiver = new NotificationActionReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_STOP);
+        registerReceiver(notificationReceiver, filter);
+        
         createNotificationChannel();
         Log.d(TAG, "Service created");
     }
@@ -112,12 +126,6 @@ public class MCPService extends Service {
             } catch (IOException e) {
                 Log.e(TAG, "启动服务器失败", e);
                 updateNotification("启动失败: " + e.getMessage(), false);
-                
-                mainHandler.post(() -> {
-                    Toast.makeText(MCPService.this, 
-                        "服务器启动失败: " + e.getMessage(), 
-                        Toast.LENGTH_LONG).show();
-                });
             } catch (Exception e) {
                 Log.e(TAG, "未知错误", e);
                 updateNotification("错误: " + e.getMessage(), false);
@@ -142,11 +150,10 @@ public class MCPService extends Service {
                 this, 0, tapIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
-        // 停止按钮：启动 StopDialogActivity，立即停止并退出
-        Intent stopIntent = new Intent(this, StopDialogActivity.class);
-        stopIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent stopPendingIntent = PendingIntent.getActivity(
-                this, 999, stopIntent,
+        // 停止按钮 - 使用 getBroadcast 触发内部 Receiver
+        Intent stopIntent = new Intent(ACTION_STOP);
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(
+                this, 0, stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
         String title = isRunning ? "MCP服务器运行中" : "MCP服务器已停止";
@@ -156,7 +163,7 @@ public class MCPService extends Service {
                 .setContentText(text)
                 .setSmallIcon(android.R.drawable.ic_menu_compass)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setOngoing(isRunning)
                 .addAction(android.R.drawable.ic_menu_close_clear_cancel, "关闭并退出", stopPendingIntent);
         
@@ -168,7 +175,7 @@ public class MCPService extends Service {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
                     "MCP服务器",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_LOW
             );
             channel.setDescription("MCP服务器的运行状态通知");
             channel.setShowBadge(false);
@@ -181,12 +188,56 @@ public class MCPService extends Service {
     @Override
     public void onDestroy() {
         Log.d(TAG, "Service destroyed, server running: " + (server != null && server.isRunning()));
+        
+        // 注销广播接收器
+        try {
+            if (notificationReceiver != null) {
+                unregisterReceiver(notificationReceiver);
+                notificationReceiver = null;
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to unregister receiver", e);
+        }
+        
         if (server != null) {
             server.stop();
             server = null;
         }
         instance = null;
         super.onDestroy();
+    }
+    
+    /**
+     * 通知栏操作接收器（参考 OpenList 实现）
+     */
+    class NotificationActionReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.d(TAG, "NotificationActionReceiver: action=" + action);
+            
+            if (ACTION_STOP.equals(action)) {
+                // 停止服务并退出应用
+                stopServerAndExit();
+            }
+        }
+    }
+    
+    private void stopServerAndExit() {
+        Log.d(TAG, "Stopping server and exiting app...");
+        
+        if (server != null) {
+            server.stop();
+            server = null;
+        }
+        
+        // 发送广播通知 MainActivity 退出
+        Intent exitIntent = new Intent("com.mcp_run.ACTION_EXIT_APP");
+        exitIntent.setPackage(getPackageName());
+        sendBroadcast(exitIntent);
+        
+        // 停止服务
+        stopSelf();
     }
     
     @Override
