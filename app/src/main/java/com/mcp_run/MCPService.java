@@ -168,7 +168,7 @@ public class MCPService extends Service {
                 .setContentText(text)
                 .setSmallIcon(android.R.drawable.ic_menu_compass)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setOngoing(isRunning)
                 .addAction(android.R.drawable.ic_menu_close_clear_cancel, "停止服务", stopPendingIntent);
         
@@ -180,7 +180,7 @@ public class MCPService extends Service {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
                     "MCP服务器",
-                    NotificationManager.IMPORTANCE_LOW
+                    NotificationManager.IMPORTANCE_DEFAULT
             );
             channel.setDescription("MCP服务器的运行状态通知");
             channel.setShowBadge(false);
