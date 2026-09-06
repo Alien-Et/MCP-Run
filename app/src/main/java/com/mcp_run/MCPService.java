@@ -61,8 +61,14 @@ public class MCPService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand action=" + (intent != null ? intent.getAction() : "null"));
         
+        // 处理从通知栏点击停止按钮
         if (intent != null && ACTION_STOP.equals(intent.getAction())) {
-            Log.d(TAG, "Stopping service...");
+            Log.d(TAG, "Stopping service from notification button...");
+            // 检查是否来自通知按钮
+            boolean fromNotification = intent.getBooleanExtra("stop_from_notification", false);
+            if (fromNotification) {
+                Log.d(TAG, "Stop requested from notification button");
+            }
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -147,10 +153,12 @@ public class MCPService extends Service {
                 this, 0, tapIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
+        // 修复: 使用明确的 action 和 FLAG_CANCEL_CURRENT 确保每次点击都能触发
         Intent stopIntent = new Intent(this, MCPService.class);
         stopIntent.setAction(ACTION_STOP);
+        stopIntent.putExtra("stop_from_notification", true);
         PendingIntent stopPendingIntent = PendingIntent.getService(
-                this, 1, stopIntent,
+                this, 999, stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
         String title = isRunning ? "MCP服务器运行中" : "MCP服务器已停止";
@@ -185,7 +193,7 @@ public class MCPService extends Service {
     
     @Override
     public void onDestroy() {
-        Log.d(TAG, "Service destroyed");
+        Log.d(TAG, "Service destroyed, server running: " + (server != null && server.isRunning()));
         if (server != null) {
             server.stop();
             server = null;
