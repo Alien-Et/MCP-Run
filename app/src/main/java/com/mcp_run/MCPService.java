@@ -185,11 +185,11 @@ public class MCPService extends Service {
                 this, 0, tapIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         
-        // 修复: 使用明确的 action 和 FLAG_CANCEL_CURRENT 确保每次点击都能触发
-        Intent stopIntent = new Intent(this, MCPService.class);
-        stopIntent.setAction(ACTION_STOP);
+        // 使用透明 Activity 处理停止按钮（更可靠）
+        Intent stopIntent = new Intent(this, StopActivity.class);
+        stopIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         stopIntent.putExtra("stop_from_notification", true);
-        PendingIntent stopPendingIntent = PendingIntent.getService(
+        PendingIntent stopPendingIntent = PendingIntent.getActivity(
                 this, 999, stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         

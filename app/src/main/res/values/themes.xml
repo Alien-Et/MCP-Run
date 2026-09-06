@@ -30,6 +30,16 @@
         <item name="materialAlertDialogTheme">@style/GlassAlertDialog.Dark</item>
     </style>
 
+    <style name="Theme.Translucent.NoTitle" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:backgroundDimAmount">0.0</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+    </style>
+
     <!-- 玻璃弹窗样式 - 日间 -->
     <style name="GlassAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="colorSurface">#F8F9FA</item>

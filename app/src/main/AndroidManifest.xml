@@ -139,6 +139,14 @@
             android:label="工具集"
             android:parentActivityName=".MainActivity" />
 
+        <!-- 透明 Activity 用于处理通知栏停止按钮 -->
+        <activity
+            android:name=".StopActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Translucent.NoTitle"
+            android:launchMode="singleTask"
+            android:excludeFromRecents="true" />
+
         <!-- ========== 前台服务 ========== -->
         <service
             android:name=".MCPService"
