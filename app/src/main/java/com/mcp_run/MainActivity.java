@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
-                if ("com.mcp_run.ACTION_EXIT_APP".equals(action)) {
+                if ("com.mcp_run.ACTION_EXIT".equals(action)) {
                     Log.d(TAG, "Received exit app notification");
                     finishAffinity(); // 退出所有Activity
                 }
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         };
         
         IntentFilter filter = new IntentFilter();
-        filter.addAction("com.mcp_run.ACTION_EXIT_APP");
+        filter.addAction("com.mcp_run.ACTION_EXIT");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(stopReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
         } else {

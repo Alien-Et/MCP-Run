@@ -149,6 +149,15 @@
                     android:exported="false"
                     android:foregroundServiceType="dataSync" />
 
+        <!-- 通知栏停止按钮接收器 -->
+        <receiver
+            android:name=".NotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mcp_run.ACTION_STOP" />
+            </intent-filter>
+        </receiver>
+
         <!-- 通知监听服务 -->
         <service
             android:name=".MCPFNotificationListener"
