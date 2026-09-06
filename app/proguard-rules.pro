@@ -14,6 +14,10 @@
 # Keep service classes
 -keep class * extends android.app.Service { *; }
 
+# Keep BroadcastReceiver classes (notification actions)
+-keep class com.mcp_run.NotificationReceiver { *; }
+-keep class com.mcp_run.MCPService$NotificationActionReceiver { *; }
+
 # Keep Runnable implementations
 -keep class * implements java.lang.Runnable { *; }
 
@@ -42,3 +46,6 @@
 -keep class java.lang.reflect.** { *; }
 -keep class java.io.** { *; }
 -keep class java.util.concurrent.** { *; }
+
+# Don't shrink the notification receiver
+-dontwarn com.mcp_run.NotificationReceiver
