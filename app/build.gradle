@@ -12,6 +12,7 @@ android {
         targetSdk 34
         versionCode 10
         versionName "1.16"
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -32,7 +33,7 @@ android {
             shrinkResources false
             aaptOptions {
                 cruncherEnabled false
-                ignoreAssetsPattern "!.svn:!.git:.*:!*.db:!*.bin"
+                ignoreAssetsPattern ""
             }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -42,6 +43,13 @@ android {
             shrinkResources false
         }
     }
+    
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
+    }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
