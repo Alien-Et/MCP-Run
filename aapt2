@@ -1,2 +1,4 @@
 #!/bin/bash
-exec /usr/bin/qemu-x86_64-static -L /tmp/x86_root /root/Android/Sdk/build-tools/35.0.0/aapt2 "$@"
+# ARM64 原生 aapt (系统版本 v0.2)
+# 注意：这是 ARM64 原生版本，但不支持所有 aapt2 功能
+exec /usr/bin/aapt "$@"
