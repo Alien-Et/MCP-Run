@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 小米蓝主色系 (夜间) -->
+    <color name="primary">#6AA8FF</color>
+    <color name="primary_dark">#328FFC</color>
+    <color name="primary_light">#9CC4FF</color>
+    <color name="accent">#6AA8FF</color>
+    
+    <!-- 背景色 - 夜间风格 -->
+    <color name="bg_primary">#0F0F0F</color>
+    <color name="bg_secondary">#1A1A1A</color>
+    <color name="bg_surface">#1A1A1A</color>
+    
+    <!-- 文字颜色 - 夜间风格 -->
+    <color name="text_primary">#F5F5F5</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="text_hint">#6B7280</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    
+    <!-- 状态颜色 -->
+    <color name="status_green">#34D399</color>
+    <color name="status_red">#F87171</color>
+    <color name="status_gray">#6B7280</color>
+    <color name="status_orange">#FBBF24</color>
+    
+    <!-- 分割线 -->
+    <color name="divider">#2D2D2D</color>
+    <color name="divider_light">#2D2D2D</color>
+    
+    <!-- 卡片背景 -->
+    <color name="card_background">#1A1A1A</color>
+    <color name="card_stroke">#2D2D2D</color>
+    
+    <!-- 按钮颜色 -->
+    <color name="btn_primary">#6AA8FF</color>
+    <color name="btn_secondary">#2D2D2D</color>
+    <color name="btn_danger">#F87171</color>
+    <color name="btn_disabled">#3D3D3D</color>
+</resources>

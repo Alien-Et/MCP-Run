@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/nav_server_status"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="服务器状态" />
+    
+    <item
+        android:id="@+id/nav_tool_list"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="工具列表" />
+    
+    <item android:title="其他">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="关于 MCP·AC" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@android:drawable/ic_menu_close_clear_cancel"
+                android:title="退出应用" />
+        </menu>
+    </item>
+    
+</menu>

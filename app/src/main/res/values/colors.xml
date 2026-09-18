@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 小米蓝主色系 -->
+    <color name="primary">#328FFC</color>
+    <color name="primary_dark">#1A7BEB</color>
+    <color name="primary_light">#6AA8FF</color>
+    <color name="accent">#328FFC</color>
+    
+    <!-- 背景色 - 小米风格 -->
+    <color name="bg_primary">#F5F6FA</color>
+    <color name="bg_secondary">#FFFFFF</color>
+    <color name="bg_surface">#FFFFFF</color>
+    
+    <!-- 文字颜色 - 小米风格 -->
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_hint">#999999</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    
+    <!-- 状态颜色 -->
+    <color name="status_green">#34D399</color>
+    <color name="status_red">#F87171</color>
+    <color name="status_gray">#9CA3AF</color>
+    <color name="status_orange">#FBBF24</color>
+    
+    <!-- 分割线 -->
+    <color name="divider">#EEEEEE</color>
+    <color name="divider_light">#F5F5F5</color>
+    
+    <!-- 卡片背景 -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_stroke">#EEEEEE</color>
+    
+    <!-- 按钮颜色 -->
+    <color name="btn_primary">#328FFC</color>
+    <color name="btn_secondary">#F5F6FA</color>
+    <color name="btn_danger">#F87171</color>
+    <color name="btn_disabled">#E5E7EB</color>
+    
+    <!-- 辅助色 -->
+    <color name="accent_soft">#E6F3FF</color>
+    <color name="glass_card">#F5F6FA</color>
+    <color name="glass_card_border">#E5E7EB</color>
+</resources>

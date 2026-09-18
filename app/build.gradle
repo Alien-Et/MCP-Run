@@ -1,0 +1,73 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.mcp_run'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.mcp_run"
+        minSdk 26
+        targetSdk 34
+        versionCode 12
+        versionName "1.22"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("keystore/mcp_run.keystore")
+            storePassword "mcp_run_2024"
+            keyAlias "mcp_run"
+            keyPassword "mcp_run_2024"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            aaptOptions {
+                cruncherEnabled false
+                ignoreAssetsPattern ""
+            }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+    
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.fragment:fragment-ktx:1.7.1'
+    
+    // WindowInsets for Edge-to-Edge support
+    implementation 'androidx.core:core:1.13.1'
+    
+    // Health Connect API
+    implementation 'androidx.health.connect:connect-client:1.1.0-alpha07'
+}

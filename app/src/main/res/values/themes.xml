@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主主题 - 自动适配暗黑/亮色模式 -->
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 小米蓝主色调 -->
+        <item name="colorPrimary">#328FFC</item>
+        <item name="colorPrimaryVariant">#1A7BEB</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#34D399</item>
+        <item name="colorSecondaryVariant">#2CB885</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        
+        <!-- 表面颜色 -->
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#1A1A1A</item>
+        <item name="colorSurfaceVariant">#E8E8E8</item>
+        <item name="colorOnSurfaceVariant">#666666</item>
+        
+        <!-- 背景颜色 -->
+        <item name="android:colorBackground">#F5F6FA</item>
+        
+        <!-- outline -->
+        <item name="colorOutline">#E5E7EB</item>
+        <item name="colorOutlineVariant">#D0D0D0</item>
+        
+        <!-- 错误颜色 -->
+        <item name="colorError">#F87171</item>
+        <item name="colorOnError">#FFFFFF</item>
+        
+        <!-- 透明状态栏和导航栏 -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        
+        <!-- Material 组件样式 -->
+        <item name="materialCardViewStyle">@style/MiCardView</item>
+        <item name="textInputStyle">@style/MiTextInputLayout</item>
+        <item name="buttonStyle">@style/MiButton</item>
+        
+        <!-- 弹窗样式 -->
+        <item name="materialAlertDialogTheme">@style/MiUIAlertDialog</item>
+    </style>
+
+    <!-- 卡片样式 -->
+    <style name="MiCardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0.5dp</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+    </style>
+
+    <!-- 文本输入样式 -->
+    <style name="MiTextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintTextColor">?attr/colorOnSurfaceVariant</item>
+        <item name="boxStrokeColor">?attr/colorOutline</item>
+    </style>
+
+    <!-- 按钮样式 -->
+    <style name="MiButton" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="minHeight">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+    <!-- 弹窗样式 -->
+    <style name="MiUIAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">?attr/colorSurface</item>
+        <item name="colorOnSurface">?attr/colorOnSurface</item>
+        <item name="colorPrimary">?attr/colorPrimary</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MiuiDialogTitle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MiuiDialogBody</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MiuiDialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MiuiDialogButton</item>
+        <item name="shapeAppearanceOverlay">@style/MiuiDialogShape</item>
+    </style>
+
+    <style name="MiuiDialogTitle" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MiuiDialogBody" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MiuiDialogButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MiuiDialogShape" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+</resources>
