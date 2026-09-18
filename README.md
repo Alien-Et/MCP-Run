@@ -198,3 +198,14 @@ app/build/outputs/apk/release/app-release.apk
 <p align="center">
   Made with ❤️ on Android
 </p>
+
+---
+
+## 📥 下载
+
+**最新版本**: [v1.22.0](https://github.com/Alien-Et/MCP-Run/releases/tag/v1.22.0)
+
+- **Release 版本**: [app-release.apk](https://github.com/Alien-Et/MCP-Run/releases/download/v1.22.0/app-release.apk) (6.47 MB)
+- **源码仓库**: [GitHub](https://github.com/Alien-Et/MCP-Run)
+
+---
