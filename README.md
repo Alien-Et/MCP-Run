@@ -209,3 +209,121 @@ app/build/outputs/apk/release/app-release.apk
 - **源码仓库**: [GitHub](https://github.com/Alien-Et/MCP-Run)
 
 ---
+
+---
+
+## 📖 关于 MCP
+
+**MCP (Model Context Protocol)** 是由 Anthropic 提出的开放协议，用于让 AI 模型安全地访问外部工具和数据源。
+
+### 为什么需要 MCP Run？
+
+- 📱 **手机变成 AI 助手**：随时随地调用手机能力（文件、系统、应用）
+- 🔒 **本地运行**：所有数据保留在设备上，不上传云端
+- 🛠️ **75+ 工具**：覆盖文件管理、系统控制、应用管理等全方位需求
+
+---
+
+## 🔌 使用方法
+
+### 启动服务器
+
+1. 安装并打开 APP
+2. 点击"启动服务器"按钮
+3. 记录显示的 IP 地址和端口（默认 1145）
+
+### 连接 MCP 客户端
+
+```bash
+# 使用 MCP CLI
+mcp run http://192.168.x.x:1145
+
+# 或在代码中使用
+const client = new MCPClient("http://192.168.x.x:1145");
+```
+
+### API 端点
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/mcp` | POST | MCP 协议通信 |
+| `/tools` | GET | 列出所有工具 |
+| `/health` | GET | 健康检查 |
+
+---
+
+## 🏗️ 架构图
+
+```
+┌─────────────────────────────────────────┐
+│           AI Client (Claude等)          │
+└─────────────────┬───────────────────────┘
+                  │ MCP Protocol
+┌─────────────────▼───────────────────────┐
+│         MCP Run (Android Server)        │
+│  ┌─────────────┐  ┌─────────────────┐  │
+│  │ MCPHttpServer│  │  Tool Registry  │  │
+│  └──────┬──────┘  └────────┬────────┘  │
+│         │                  │           │
+│  ┌──────▼──────┐  ┌────────▼────────┐  │
+│  │  75+ Tools  │  │  MCPService     │  │
+│  │ (Files,     │  │ (Foreground)    │  │
+│  │  System,    │  └─────────────────┘  │
+│  │  Apps...)   │                       │
+│  └─────────────┘                       │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## 📸 界面预览
+
+### 亮色模式
+![](https://raw.githubusercontent.com/Alien-Et/MCP-Run/main/screenshots/light_mode.png)
+
+### 暗黑模式
+![](https://raw.githubusercontent.com/Alien-Et/MCP-Run/main/screenshots/dark_mode.png)
+
+> 注：截图目录需手动创建并添加图片
+
+---
+
+## ❓ 常见问题
+
+### Q: 启动后无法连接？
+**A**: 确保手机和 AI 设备在同一局域网，检查防火墙设置。
+
+### Q: 端口被占用？
+**A**: 在设置页面修改端口号（1024-65535）。
+
+### Q: 通知栏停止按钮无响应？
+**A**: 检查是否授予了通知权限，以及是否在省电模式中。
+
+### Q: 如何保持后台运行？
+**A**: 在设置中开启"忽略电池优化"，或添加至白名单。
+
+---
+
+## 📝 更新日志
+
+### v1.22.0 (2026-09-19)
+- ✨ 新增 Material Design 3 主题系统
+- ✨ 自动适配暗黑/亮色模式
+- ✨ MUI 液态玻璃风格导航栏
+- 🐛 修复工具详情点击崩溃
+- 🐛 修复输入框数字显示不全
+- 🐛 优化持久化保存逻辑
+
+### v1.20.1
+- 修复 APK 安装相关问题
+- 优化工具集列表显示
+
+---
+
+## 🔗 相关链接
+
+- [MCP 官方文档](https://modelcontextprotocol.io/)
+- [Anthropic Claude](https://claude.ai/)
+- [Android Developer](https://developer.android.com/)
+
+---
